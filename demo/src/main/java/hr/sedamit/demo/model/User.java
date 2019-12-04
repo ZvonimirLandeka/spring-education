@@ -40,7 +40,7 @@ public class User {
 	@Column(nullable = false)
 	private String fullName;
 
-	private transient int age;
+	private int age;
 
 	private boolean active;
 	

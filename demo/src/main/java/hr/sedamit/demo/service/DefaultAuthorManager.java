@@ -1,14 +1,16 @@
 package hr.sedamit.demo.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import hr.sedamit.demo.dbo.AuthorRepository;
+import hr.sedamit.demo.dbo.AuthorSpecifications;
 import hr.sedamit.demo.model.Author;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,8 +26,8 @@ public class DefaultAuthorManager implements AuthorManager {
 	}
 
 	@Override
-	public List<Author> getAllAuthors() {
-		return repository.findAll();
+	public Page<Author> getAllAuthors(Pageable pageable) {
+		return repository.findAll(AuthorSpecifications.byYearOfBirth(1900), pageable);
 	}
 
 	@Override

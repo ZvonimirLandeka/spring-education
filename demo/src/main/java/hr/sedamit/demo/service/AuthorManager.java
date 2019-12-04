@@ -1,11 +1,14 @@
 package hr.sedamit.demo.service;
 
-import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import hr.sedamit.demo.model.Author;
 public interface AuthorManager {
-	List<Author> getAllAuthors();
+
+	Page<Author> getAllAuthors(Pageable pageable);
 
 	Optional<Author> getAuthor(Long authorId);
 
