@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -27,6 +28,10 @@ public class Book {
 
 	@Column(length = 2000)
 	private String title;
+
+	private int publishYear;
+
+	private BookStatus status;
 
 	// na ovaj nacin bi se spremilo kad se sprema knjiga i njegov autor
 //	@ManyToOne(cascade = CascadeType.ALL)

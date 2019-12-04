@@ -1,9 +1,12 @@
 package hr.sedamit.demo.model;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
@@ -13,10 +16,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
+@Inheritance
+@DiscriminatorColumn(name = "USER_TYPE")
+@DiscriminatorValue("USER")
 public class User {
 	
 	@Id

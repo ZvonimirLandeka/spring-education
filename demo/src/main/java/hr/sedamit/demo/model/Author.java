@@ -1,13 +1,9 @@
 package hr.sedamit.demo.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
@@ -17,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -37,10 +34,10 @@ public class Author {
 
 	private int yearOfBirth;
 
-	@OneToMany(mappedBy = "author")
+//	@OneToMany(mappedBy = "author")
 	// ovdje je opasno jer se previse informacija dohvaca, a pitanje je hoce li se
 	// koristiti
 	// @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
-	public List<Book> books = new ArrayList<>();
+//	public List<Book> books = new ArrayList<>();
 
 }

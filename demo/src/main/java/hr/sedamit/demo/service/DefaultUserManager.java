@@ -3,12 +3,18 @@ package hr.sedamit.demo.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import hr.sedamit.demo.dbo.UserRepository;
 import hr.sedamit.demo.model.User;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Profile("!test")
+@Slf4j
 public class DefaultUserManager implements UserManager {
 
 	private UserRepository repository;
@@ -35,6 +41,11 @@ public class DefaultUserManager implements UserManager {
 	@Override
 	public void delete(Long userId) {
 		repository.deleteById(userId);
+	}
+
+	@PostConstruct
+	public void init() {
+		log.info("DefaultUserManager initialized!");
 	}
 
 }
