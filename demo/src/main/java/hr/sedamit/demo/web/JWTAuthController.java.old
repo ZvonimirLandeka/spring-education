@@ -1,0 +1,52 @@
+package hr.sedamit.demo.web;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import hr.sedamit.demo.security.JwtRequest;
+import hr.sedamit.demo.security.JwtResponse;
+import hr.sedamit.demo.security.JwtTokenUtil;
+import hr.sedamit.demo.service.UserManager;
+
+@Controller
+@CrossOrigin
+public class JWTAuthController {
+
+	private AuthenticationManager authenticationManager;
+
+	private UserManager userManager;
+
+	private JwtTokenUtil jwtTokenUtil;
+
+	public JWTAuthController(AuthenticationManager authenticationManager, UserManager userManager,
+			JwtTokenUtil jwtTokenUtil) {
+		super();
+		this.authenticationManager = authenticationManager;
+		this.userManager = userManager;
+		this.jwtTokenUtil = jwtTokenUtil;
+	}
+
+	@PostMapping("/api/authenticate")
+	public JwtResponse authentificate(JwtRequest request) throws Exception{
+		authenticate(request.getUsername(), request.getPassword());
+		final UserDetails userDetails = userManager.loadUserByUsername(request.getUsername());
+		final String token = jwtTokenUtil.generateToken(userDetails);
+		return new JwtResponse(token);
+	}
+
+	private void authenticate(String username, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e ) {
+			throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+			throw new Exception("INVALID_CREDENTIALS", e);
+        }
+    }
+}

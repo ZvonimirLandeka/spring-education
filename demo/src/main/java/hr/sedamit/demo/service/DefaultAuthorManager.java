@@ -47,6 +47,9 @@ public class DefaultAuthorManager implements AuthorManager {
 	@Caching(evict = { @CacheEvict(value = CacheNames.CACHE_AUTHOR_DETAILS, key = "#author.id"),
 			@CacheEvict(value = CacheNames.CACHE_AUTHOR_LIST, allEntries = true) })
 
+	// NACINI SIGURNOSTI NA SAMOJ METODI
+//	@Secured("EDIT_AUTHORS")
+//	@RolesAllowed("ROLE_ADMIN")
 	public Author save(Author author) {
 		return repository.save(author);
 	}

@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import hr.sedamit.demo.model.User;
+import hr.sedamit.demo.service.RoleManager;
 import hr.sedamit.demo.service.UserManager;
 import hr.sedamit.demo.web.commands.UpdateUserCommand;
 import hr.sedamit.demo.web.dto.DTOFactory;
@@ -33,13 +35,20 @@ public class UserController {
 
 	private UserManager userManager;
 
+	private RoleManager roleManager;
+
+	// ne treba zbog slf4j
 //	private Logger log = LoggerFactory.getLogger(UserController.class);
+
+	private PasswordEncoder passwordEncoder;
 
 	@Value("${user.list.allowed:true}")
 	private boolean allowListUsers;
 
-	public UserController(UserManager userManager) {
+	public UserController(UserManager userManager, PasswordEncoder passwordEncoder, RoleManager roleManager) {
 		this.userManager = userManager;
+		this.passwordEncoder = passwordEncoder;
+		this.roleManager = roleManager;
 	}
 
 	@GetMapping("/list")
@@ -111,10 +120,12 @@ public class UserController {
 	private void updateUserData(User user, UpdateUserCommand command, boolean isNew) {
 		user.setUsername(command.getUsername());
 		if (isNew) {
-			user.setPassword(command.getPassword());
+			String plainPassword = command.getPassword();
+			user.setPassword(passwordEncoder.encode(plainPassword));
 		}
 		user.setFullName(command.getFullName());
 		user.setAge(command.getAge());
 		user.setActive(command.isActive());
+		user.setRole(roleManager.getRole(command.getRoleId()).get());
 	}
 }

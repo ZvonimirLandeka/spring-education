@@ -10,6 +10,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.PostConstruct;
 
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import hr.sedamit.demo.model.User;
@@ -72,6 +74,16 @@ public class DummyUserManager implements UserManager {
 	@PostConstruct
 	public void init() {
 		log.info("DummyUserManager initialized!");
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<User> user = allUsers.values().stream().filter(a -> username.equals(a.getUsername())).findFirst();
+		if (user.isPresent()) {
+			return user.get();
+		} else {
+			throw new UsernameNotFoundException("No user with such username: " + username);
+		}
 	}
 
 }

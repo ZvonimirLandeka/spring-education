@@ -7,6 +7,8 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import hr.sedamit.demo.dbo.UserRepository;
@@ -53,6 +55,16 @@ public class DefaultUserManager implements UserManager {
 	@PostConstruct
 	public void init() {
 		log.info("DefaultUserManager initialized!");
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<User> user = repository.findByUsername(username);
+		if (user.isPresent()) {
+			return user.get();
+		} else {
+			throw new UsernameNotFoundException("No user with such username: " + username);
+		}
 	}
 
 }

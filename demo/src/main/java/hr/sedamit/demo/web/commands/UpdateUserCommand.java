@@ -17,4 +17,6 @@ public class UpdateUserCommand {
 
 	private boolean active;
 
+	private Long roleId;
+
 }

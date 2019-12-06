@@ -24,6 +24,7 @@ import hr.sedamit.demo.service.AuthorManager;
 import hr.sedamit.demo.web.commands.UpdateAuthorCommand;
 import hr.sedamit.demo.web.dto.AuthorDTO;
 import hr.sedamit.demo.web.dto.DTOFactory;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -41,6 +42,7 @@ public class AuthorController {
 		this.authorManager = authorManager;
 	}
 
+	@ApiOperation(value = "Get all authors")
 	@GetMapping("/list")
 	public Page<AuthorDTO> listAllAuthors(@PageableDefault(size = 10) Pageable pageable, Sort sort) {
 		Page<Author> authors = authorManager.getAllAuthors(pageable);
@@ -49,6 +51,7 @@ public class AuthorController {
 	}
 	
 
+	@ApiOperation(value = "Get author by id")
 	@GetMapping("/{authorId}")
 	public AuthorDTO showAuthorDetails(@PathVariable Long authorId) {
 		Optional<Author> optionalAuthor = authorManager.getAuthor(authorId);

@@ -16,4 +16,6 @@ public class UserDTO {
 	private transient int age;
 
 	private boolean active;
+	
+	private RoleDTO role;
 }
